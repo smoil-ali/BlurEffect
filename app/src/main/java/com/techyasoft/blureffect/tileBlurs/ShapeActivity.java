@@ -31,6 +31,10 @@ public class ShapeActivity extends BaseActivity implements BaseActivity.BaseList
         binding.rectangle.setOnClickListener(v -> {
             binding.img.changeShapeMode(ShapeBlurView.ShapeMode.RECTANGLE);
         });
+
+        binding.heart.setOnClickListener(v -> {
+            binding.img.changeShapeMode(ShapeBlurView.ShapeMode.HEART);
+        });
     }
 
 

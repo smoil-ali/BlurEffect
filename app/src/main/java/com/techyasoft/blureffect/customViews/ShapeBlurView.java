@@ -28,38 +28,37 @@ public class ShapeBlurView extends CommonView{
 
     private ShapeMode shapeMode = ShapeMode.HEART;
 
-    Path circlePath,bitmapCirclePath;
-    Paint circlePaint;
+    private Path mainPath, bitmapPath;
+    private Paint mainPaint;
 
 
-    float leftCentre,rightCentre,topCentre,bottomCentre;
-    float bitmapLeftCentre,bitmapRightCentre,bitmapTopCentre,bitmapBottomCentre;
+    private float bitmapLeftCentre,bitmapRightCentre,bitmapTopCentre,bitmapBottomCentre;
 
     // circle radius
-    float strokeWidth = 540f;
+    private float circleRadius = 540f;
 
     // rectangle width and height
-    float rectangleWidth = 400;
-    float rectangleHeight = 300;
+    private final float rectangleWidth = 400;
+    private final float rectangleHeight = 300;
 
 
     //heart params
-    float centreX;
-    float centreY;
+    private float centreX;
+    private float centreY;
 
 
     //it will adjust width
-    float xMargin;
+    private float xMargin;
 
     //it will adjust heart curve corners
-    float yStartMargin;
+    private float yStartMargin;
 
     // they will adjust heart height
-    float yMidMargin;
-    float yEndMargin;
+    private float yMidMargin;
+    private float yEndMargin;
 
     //heart start point
-    float heartStartPoint = yEndMargin / 2;
+    private float heartStartPoint = yEndMargin / 2;
 
 
     public ShapeBlurView(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -76,13 +75,13 @@ public class ShapeBlurView extends CommonView{
         bitmapCanvas = new Canvas(bitmap);
         bitmapCanvas.drawBitmap(blurBitmap,0,0,null);
 
-        circlePath = new Path();
-        bitmapCirclePath = new Path();
+        mainPath = new Path();
+        bitmapPath = new Path();
 
-        circlePaint = new Paint();
-        circlePaint.setColor(ContextCompat.getColor(context, R.color.circle_stroke));
-        circlePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        circlePaint.setStrokeWidth(5f);
+        mainPaint = new Paint();
+        mainPaint.setColor(ContextCompat.getColor(context, R.color.circle_stroke));
+        mainPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        mainPaint.setStrokeWidth(5f);
 
         setImageBitmap(bitmap);
         fitScreen();
@@ -93,7 +92,7 @@ public class ShapeBlurView extends CommonView{
     public void setNormalBitmapShader(){
         Log.d(TAG, "setNormalBitmapShader: ");
         bitmapShader = new BitmapShader(orgBitmap, Shader.TileMode.CLAMP,Shader.TileMode.CLAMP);
-        circlePaint.setShader(bitmapShader);
+        mainPaint.setShader(bitmapShader);
         bitmapShader.setLocalMatrix(matrix);
 
 
@@ -102,7 +101,7 @@ public class ShapeBlurView extends CommonView{
 
     @Override
     void readyToGo() {
-        Log.d(TAG, "getStrokeSize: resRatio "+resRatio * strokeWidth);
+        Log.d(TAG, "getStrokeSize: resRatio "+resRatio * circleRadius);
         setNormalBitmapShader();
         showInit();
     }
@@ -111,6 +110,7 @@ public class ShapeBlurView extends CommonView{
 
     private void showInit(){
 
+        resetBitmapCanvas();
         float maxClipHeight = (orgHeight) + transY;
         float top = 0;
         float left = transX;
@@ -126,10 +126,10 @@ public class ShapeBlurView extends CommonView{
         float tBottom = Math.min(maxClipHeight,screenHeight);
 
 
-        leftCentre = right / 2;
-        rightCentre = right / 2;
-        topCentre = tBottom / 2;
-        bottomCentre = tBottom / 2;
+        float leftCentre = right / 2;
+        float rightCentre = right / 2;
+        float topCentre = tBottom / 2;
+        float bottomCentre = tBottom / 2;
 
         bitmapLeftCentre = ((leftCentre - transX) - rectangleWidth) /finalScale;
         bitmapRightCentre = ((rightCentre - transX) + rectangleWidth) /finalScale;
@@ -142,23 +142,23 @@ public class ShapeBlurView extends CommonView{
 
 
 
-        circlePaint.getShader().setLocalMatrix(new Matrix());
+        mainPaint.getShader().setLocalMatrix(new Matrix());
 
         if (shapeMode == ShapeMode.CIRCLE){
             // fix circle radius issue
-            bitmapCirclePath.reset();
+            bitmapPath.reset();
             float result = bottomBit + topBit;
             float rightBit = (right - transX) / finalScale;
 
-            strokeWidth = (float) screenWidth / 2;
-            bitmapCirclePath.moveTo(rightBit / 2, result / 2);
-            bitmapCirclePath.addCircle(rightBit / 2, result / 2,
-                    strokeWidth,Path.Direction.CW);
+            circleRadius = (float) screenWidth / 2;
+            bitmapPath.moveTo(rightBit / 2, result / 2);
+            bitmapPath.addCircle(rightBit / 2, result / 2,
+                    circleRadius,Path.Direction.CW);
 
         }else if (shapeMode == ShapeMode.RECTANGLE){
-            bitmapCirclePath.reset();
-            bitmapCirclePath.moveTo(touchX,touchY);
-            bitmapCirclePath.addRect(bitmapLeftCentre,
+            bitmapPath.reset();
+            bitmapPath.moveTo(touchX,touchY);
+            bitmapPath.addRect(bitmapLeftCentre,
                     bitmapTopCentre,
                     bitmapRightCentre ,
                     bitmapBottomCentre,
@@ -173,28 +173,29 @@ public class ShapeBlurView extends CommonView{
             centreY = (top + tBottom)/2;
 
 
-            //it will adjust width
+            //it will adjust width changeable
             xMargin = 300f;
 
-            //it will adjust heart curve corners
+            //it will adjust heart curve corners changeable
             yStartMargin = 200f;
 
-            // they will adjust heart height
-            yMidMargin = 300f;
+            // it will adjust heart height changeable
             yEndMargin = 400f;
+            // it will be fixed
+            yMidMargin = yEndMargin - 100f;
             
             //heart start point
             heartStartPoint = yEndMargin / 2;
 
-            bitmapCirclePath.reset();
-            bitmapCirclePath.moveTo((centreX - transX)/finalScale,((centreY - heartStartPoint) - transY)/finalScale);
-            bitmapCirclePath.cubicTo( ((centreX - transX) - xMargin)/finalScale,
+            bitmapPath.reset();
+            bitmapPath.moveTo((centreX - transX)/finalScale,((centreY - heartStartPoint) - transY)/finalScale);
+            bitmapPath.cubicTo( ((centreX - transX) - xMargin)/finalScale,
                     (((centreY - heartStartPoint) - transY) - yStartMargin)/ finalScale,
                     ((centreX - transX) - xMargin)/finalScale,
                     (yMidMargin + ((centreY - heartStartPoint) - transY))/finalScale,
                     (centreX - transX)/finalScale,
                     (yEndMargin + ((centreY - heartStartPoint) - transY))/finalScale);
-            bitmapCirclePath.cubicTo(((centreX - transX) + xMargin)/finalScale,
+            bitmapPath.cubicTo(((centreX - transX) + xMargin)/finalScale,
                     (yMidMargin + ((centreY - heartStartPoint) - transY))/finalScale,
                     ((centreX - transX) + xMargin)/finalScale,
                     (((centreY - heartStartPoint) - transY) - yStartMargin)/finalScale,
@@ -205,7 +206,7 @@ public class ShapeBlurView extends CommonView{
 
 
 
-        bitmapCanvas.drawPath(bitmapCirclePath,circlePaint);
+        bitmapCanvas.drawPath(bitmapPath, mainPaint);
 
 
         postInvalidate();
@@ -234,8 +235,8 @@ public class ShapeBlurView extends CommonView{
 
 
 
-        if (circlePath != null && circlePaint != null){
-            canvas.drawPath(circlePath, circlePaint);
+        if (mainPath != null && mainPaint != null){
+            canvas.drawPath(mainPath, mainPaint);
         }
     }
 
@@ -274,31 +275,31 @@ public class ShapeBlurView extends CommonView{
                 }
 
                 resetBitmapCanvas();
-                circlePaint.getShader().setLocalMatrix(matrix);
+                mainPaint.getShader().setLocalMatrix(matrix);
 
                 if (shapeMode == ShapeMode.CIRCLE){
-                    circlePath.reset();
-                    circlePath.moveTo(touchX,touchY);
-                    circlePath.addCircle(touchX,touchY,
-                            strokeWidth * resRatio,Path.Direction.CW);
+                    mainPath.reset();
+                    mainPath.moveTo(touchX,touchY);
+                    mainPath.addCircle(touchX,touchY,
+                            circleRadius * resRatio,Path.Direction.CW);
                 }else if (shapeMode == ShapeMode.RECTANGLE){
-                    circlePath.reset();
-                    circlePath.moveTo(touchX,touchY);
-                    circlePath.addRect(touchX - rectangleWidth,touchY - rectangleHeight ,
+                    mainPath.reset();
+                    mainPath.moveTo(touchX,touchY);
+                    mainPath.addRect(touchX - rectangleWidth,touchY - rectangleHeight ,
                             touchX + rectangleWidth ,touchY + rectangleHeight,
                             Path.Direction.CW);
                 }else if (shapeMode == ShapeMode.HEART){
-                    circlePath.reset();
+                    mainPath.reset();
                     centreX = touchX;
                     centreY = touchY;
-                    circlePath.moveTo(centreX,centreY - heartStartPoint);
-                    circlePath.cubicTo( centreX - xMargin,
+                    mainPath.moveTo(centreX,centreY - heartStartPoint);
+                    mainPath.cubicTo( centreX - xMargin,
                             (centreY - heartStartPoint) - yStartMargin,
                             centreX - xMargin,
                             yMidMargin + (centreY - heartStartPoint),
                             centreX,
                             yEndMargin + (centreY - heartStartPoint));
-                    circlePath.cubicTo(centreX + xMargin,
+                    mainPath.cubicTo(centreX + xMargin,
                             yMidMargin + (centreY - heartStartPoint),
                             centreX + xMargin,
                             (centreY - heartStartPoint) - yStartMargin,
@@ -310,28 +311,28 @@ public class ShapeBlurView extends CommonView{
             case MotionEvent.ACTION_MOVE:
 
                 if (shapeMode == ShapeMode.CIRCLE){
-                    circlePath.reset();
-                    circlePath.moveTo(touchX,touchY);
-                    circlePath.addCircle(touchX,touchY,
-                            strokeWidth * resRatio,Path.Direction.CW);
+                    mainPath.reset();
+                    mainPath.moveTo(touchX,touchY);
+                    mainPath.addCircle(touchX,touchY,
+                            circleRadius * resRatio,Path.Direction.CW);
                 }else if (shapeMode == ShapeMode.RECTANGLE){
-                    circlePath.reset();
-                    circlePath.moveTo(touchX,touchY);
-                    circlePath.addRect(touchX - rectangleWidth,touchY - rectangleHeight ,
+                    mainPath.reset();
+                    mainPath.moveTo(touchX,touchY);
+                    mainPath.addRect(touchX - rectangleWidth,touchY - rectangleHeight ,
                             touchX + rectangleWidth ,touchY + rectangleHeight,
                             Path.Direction.CW);
                 }else if (shapeMode == ShapeMode.HEART){
-                    circlePath.reset();
+                    mainPath.reset();
                     centreX = touchX;
                     centreY = touchY;
-                    circlePath.moveTo(centreX,centreY - heartStartPoint);
-                    circlePath.cubicTo( centreX - xMargin,
+                    mainPath.moveTo(centreX,centreY - heartStartPoint);
+                    mainPath.cubicTo( centreX - xMargin,
                             (centreY - heartStartPoint) - yStartMargin,
                             centreX - xMargin,
                             yMidMargin + (centreY - heartStartPoint),
                             centreX,
                             yEndMargin + (centreY - heartStartPoint));
-                    circlePath.cubicTo(centreX + xMargin,
+                    mainPath.cubicTo(centreX + xMargin,
                             yMidMargin + (centreY - heartStartPoint),
                             centreX + xMargin,
                             (centreY - heartStartPoint) - yStartMargin,
@@ -342,34 +343,34 @@ public class ShapeBlurView extends CommonView{
                 break;
             case MotionEvent.ACTION_UP:
                 resetBitmapCanvas();
-                circlePaint.getShader().setLocalMatrix(new Matrix());
+                mainPaint.getShader().setLocalMatrix(new Matrix());
                 if (shapeMode == ShapeMode.CIRCLE){
                     Log.d(TAG, "onTouchEvent: if");
-                    bitmapCirclePath.reset();
-                    bitmapCirclePath.moveTo(bitmapX,bitmapY);
-                    bitmapCirclePath.addCircle(bitmapX,bitmapY,strokeWidth,Path.Direction.CW);
+                    bitmapPath.reset();
+                    bitmapPath.moveTo(bitmapX,bitmapY);
+                    bitmapPath.addCircle(bitmapX,bitmapY, circleRadius,Path.Direction.CW);
                 }else if (shapeMode == ShapeMode.RECTANGLE){
-                    bitmapCirclePath.reset();
-                    bitmapCirclePath.moveTo(bitmapX,bitmapY);
+                    bitmapPath.reset();
+                    bitmapPath.moveTo(bitmapX,bitmapY);
                     bitmapLeftCentre = ((touchX - transX) - rectangleWidth) /finalScale;
                     bitmapRightCentre = ((touchX - transX) + rectangleWidth) /finalScale;
                     bitmapTopCentre = ((touchY - transY) - rectangleHeight) /finalScale;
                     bitmapBottomCentre = ((touchY - transY) + rectangleHeight) /finalScale;
-                    bitmapCirclePath.addRect(bitmapLeftCentre,
+                    bitmapPath.addRect(bitmapLeftCentre,
                             bitmapTopCentre ,
                             bitmapRightCentre ,
                             bitmapBottomCentre,
                             Path.Direction.CW);
                 }else if (shapeMode == ShapeMode.HEART){
-                    bitmapCirclePath.reset();
-                    bitmapCirclePath.moveTo((centreX - transX)/finalScale,((centreY - heartStartPoint) - transY)/finalScale);
-                    bitmapCirclePath.cubicTo( ((centreX - transX) - xMargin)/finalScale,
+                    bitmapPath.reset();
+                    bitmapPath.moveTo((centreX - transX)/finalScale,((centreY - heartStartPoint) - transY)/finalScale);
+                    bitmapPath.cubicTo( ((centreX - transX) - xMargin)/finalScale,
                             (((centreY - heartStartPoint) - transY) - yStartMargin)/ finalScale,
                             ((centreX - transX) - xMargin)/finalScale,
                             (yMidMargin + ((centreY - heartStartPoint) - transY))/finalScale,
                             (centreX - transX)/finalScale,
                             (yEndMargin + ((centreY - heartStartPoint) - transY))/finalScale);
-                    bitmapCirclePath.cubicTo(((centreX - transX) + xMargin)/finalScale,
+                    bitmapPath.cubicTo(((centreX - transX) + xMargin)/finalScale,
                             (yMidMargin + ((centreY - heartStartPoint) - transY))/finalScale,
                             ((centreX - transX) + xMargin)/finalScale,
                             (((centreY - heartStartPoint) - transY) - yStartMargin)/finalScale,
@@ -379,8 +380,8 @@ public class ShapeBlurView extends CommonView{
 
 
 
-                circlePath.reset();
-                bitmapCanvas.drawPath(bitmapCirclePath,circlePaint);
+                mainPath.reset();
+                bitmapCanvas.drawPath(bitmapPath, mainPaint);
                 break;
         }
 
