@@ -531,10 +531,6 @@ public class BlurView extends CommonView{
         fillCirclePath.addCircle(getTouchXValue(touchX),getTouchYValue(touchY),
                 strokeWidth * resRatio/2,Path.Direction.CW);
 
-        fillCirclePath.reset();
-        fillCirclePath.moveTo(getTouchXValue(touchX),getTouchYValue(touchY));
-        fillCirclePath.addCircle(getTouchXValue(touchX),getTouchYValue(touchY),
-                strokeWidth * resRatio/2,Path.Direction.CW);
 
         lineOffsetPath.reset();
         lineOffsetPath.moveTo(touchX,touchY);
@@ -550,10 +546,6 @@ public class BlurView extends CommonView{
         strokeCirclePath.reset();
         strokeCirclePath.moveTo(getTouchXValue(touchX),getTouchYValue(touchY));
         strokeCirclePath.addCircle(getTouchXValue(touchX),getTouchYValue(touchY),strokeWidth * resRatio/2,Path.Direction.CW);
-
-        fillCirclePath.reset();
-        fillCirclePath.moveTo(getTouchXValue(touchX),getTouchYValue(touchY));
-        fillCirclePath.addCircle(getTouchXValue(touchX),getTouchYValue(touchY),strokeWidth * resRatio/2,Path.Direction.CW);
 
         fillCirclePath.reset();
         fillCirclePath.moveTo(getTouchXValue(touchX),getTouchYValue(touchY));

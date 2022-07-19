@@ -20,7 +20,7 @@
         android:theme="@style/Theme.BlurEffect"
         tools:targetApi="31">
         <activity
-            android:name=".tileBlurs.ShapeActivity"
+            android:name=".tileBlurs.HomeActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,13 +29,14 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".tileBlurs.ShapeActivity"
+            android:exported="true"/>
+        <activity
             android:name=".tileBlurs.TileBlurActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"/>
         <activity
             android:name=".ui.MainActivity"
-            android:exported="true"/>
+            android:exported="true" />
     </application>
 
 </manifest>

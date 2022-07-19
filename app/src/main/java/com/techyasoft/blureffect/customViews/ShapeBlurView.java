@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.Region;
 import android.graphics.Shader;
 import android.util.AttributeSet;
@@ -23,16 +24,16 @@ public class ShapeBlurView extends CommonView{
     private static final String TAG = "ShapeBlurView";
 
     public enum ShapeMode{
-        CIRCLE,RECTANGLE,HEART
+        CIRCLE,RECTANGLE,HEART,STAR
     }
 
-    private ShapeMode shapeMode = ShapeMode.HEART;
+    private ShapeMode shapeMode = ShapeMode.CIRCLE;
 
     private Path mainPath, bitmapPath;
     private Paint mainPaint;
 
 
-    private float bitmapLeftCentre,bitmapRightCentre,bitmapTopCentre,bitmapBottomCentre;
+
 
     // circle radius
     private float circleRadius = 540f;
@@ -40,6 +41,7 @@ public class ShapeBlurView extends CommonView{
     // rectangle width and height
     private final float rectangleWidth = 400;
     private final float rectangleHeight = 300;
+    private float bitmapLeftCentre,bitmapRightCentre,bitmapTopCentre,bitmapBottomCentre;
 
 
     //heart params
@@ -59,6 +61,18 @@ public class ShapeBlurView extends CommonView{
 
     //heart start point
     private float heartStartPoint = yEndMargin / 2;
+
+    //start shape params
+    Point mainPoint = new Point();
+    Point point2 = new Point(100,200);
+    Point point3 = new Point(300,230);
+    Point point4 = new Point(150,330);
+    Point point5 = new Point(200,530);
+    Point point6 = new Point(0,430);
+    Point point7 = new Point(200,530);
+    Point point8 = new Point(150,330);
+    Point point9 = new Point(300,230);
+    Point point10 = new Point(100,200);
 
 
     public ShapeBlurView(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -123,13 +137,14 @@ public class ShapeBlurView extends CommonView{
         float sum = top + bottom;
         touchY = sum / 2;
         touchX = orgWidth / 2;
-        float tBottom = Math.min(maxClipHeight,screenHeight);
+
 
 
         float leftCentre = right / 2;
         float rightCentre = right / 2;
-        float topCentre = tBottom / 2;
-        float bottomCentre = tBottom / 2;
+        float topCentre = bottom / 2;
+        float bottomCentre = bottom / 2;
+
 
         bitmapLeftCentre = ((leftCentre - transX) - rectangleWidth) /finalScale;
         bitmapRightCentre = ((rightCentre - transX) + rectangleWidth) /finalScale;
@@ -138,7 +153,7 @@ public class ShapeBlurView extends CommonView{
 
 
         float topBit = (top - transY) / finalScale;
-        float bottomBit = (tBottom - transY) / finalScale;
+        float bottomBit = (bottom - transY) / finalScale;
 
 
 
@@ -165,12 +180,8 @@ public class ShapeBlurView extends CommonView{
                     Path.Direction.CW);
 
         }else if (shapeMode == ShapeMode.HEART){
-
-
-
-
             centreX = right/2;
-            centreY = (top + tBottom)/2;
+            centreY = (top + bottom)/2;
 
 
             //it will adjust width changeable
@@ -202,13 +213,37 @@ public class ShapeBlurView extends CommonView{
                     (centreX - transX)/finalScale,
                     ((centreY - heartStartPoint) - transY)/finalScale);
 
+        }else if (shapeMode == ShapeMode.STAR){
+            bitmapPath.reset();
+            mainPoint.x =(int) touchX;
+            mainPoint.y = (int) touchY - 400;
+            bitmapPath.moveTo((mainPoint.x - transX)/finalScale ,
+                    (mainPoint.y - transY)/finalScale);
+            bitmapPath.lineTo(((mainPoint.x - transX) - point2.x)/finalScale,
+                    ((mainPoint.y - transY) + point2.y)/finalScale);
+            bitmapPath.lineTo(((mainPoint.x - transX) - point3.x)/finalScale,
+                    ((mainPoint.y - transY) + point3.y)/finalScale);
+            bitmapPath.lineTo(((mainPoint.x - transX) - point4.x)/finalScale,
+                    ((mainPoint.y - transY) + point4.y)/finalScale);
+            bitmapPath.lineTo(((mainPoint.x - transX) - point5.x)/finalScale,
+                    ((mainPoint.y - transY) + point5.y)/finalScale);
+            bitmapPath.lineTo(((mainPoint.x - transX) + point6.x)/finalScale,
+                    ((mainPoint.y - transY) + point6.y)/finalScale);
+            bitmapPath.lineTo(((mainPoint.x - transX) + point7.x)/finalScale,
+                    ((mainPoint.y - transY) + point7.y)/finalScale);
+            bitmapPath.lineTo(((mainPoint.x - transX) + point8.x)/finalScale,
+                    ((mainPoint.y - transY) + point8.y)/finalScale);
+            bitmapPath.lineTo(((mainPoint.x - transX) + point9.x)/finalScale,
+                    ((mainPoint.y - transY) + point9.y)/finalScale);
+            bitmapPath.lineTo(((mainPoint.x - transX) + point10.x)/finalScale,
+                    ((mainPoint.y - transY) + point10.y)/finalScale);
+            
+
         }
 
 
 
         bitmapCanvas.drawPath(bitmapPath, mainPaint);
-
-
         postInvalidate();
     }
 
@@ -305,6 +340,21 @@ public class ShapeBlurView extends CommonView{
                             (centreY - heartStartPoint) - yStartMargin,
                             centreX,
                             centreY - heartStartPoint);
+                }else if (shapeMode == ShapeMode.STAR){
+                    mainPath.reset();
+
+                    mainPoint.x =(int) touchX;
+                    mainPoint.y = (int) touchY - 400;
+                    mainPath.moveTo(mainPoint.x ,mainPoint.y);
+                    mainPath.lineTo(mainPoint.x - point2.x,mainPoint.y + point2.y);
+                    mainPath.lineTo(mainPoint.x - point3.x,mainPoint.y + point3.y);
+                    mainPath.lineTo(mainPoint.x - point4.x,mainPoint.y + point4.y);
+                    mainPath.lineTo(mainPoint.x - point5.x,mainPoint.y + point5.y);
+                    mainPath.lineTo(mainPoint.x + point6.x,mainPoint.y + point6.y);
+                    mainPath.lineTo(mainPoint.x + point7.x,mainPoint.y + point7.y);
+                    mainPath.lineTo(mainPoint.x + point8.x,mainPoint.y + point8.y);
+                    mainPath.lineTo(mainPoint.x + point9.x,mainPoint.y + point9.y);
+                    mainPath.lineTo(mainPoint.x + point10.x,mainPoint.y + point10.y);
                 }
 
                 break;
@@ -338,6 +388,21 @@ public class ShapeBlurView extends CommonView{
                             (centreY - heartStartPoint) - yStartMargin,
                             centreX,
                             centreY - heartStartPoint);
+                }else if (shapeMode == ShapeMode.STAR){
+                    mainPath.reset();
+
+                    mainPoint.x =(int) touchX;
+                    mainPoint.y = (int) touchY - 400;
+                    mainPath.moveTo(mainPoint.x ,mainPoint.y);
+                    mainPath.lineTo(mainPoint.x - point2.x,mainPoint.y + point2.y);
+                    mainPath.lineTo(mainPoint.x - point3.x,mainPoint.y + point3.y);
+                    mainPath.lineTo(mainPoint.x - point4.x,mainPoint.y + point4.y);
+                    mainPath.lineTo(mainPoint.x - point5.x,mainPoint.y + point5.y);
+                    mainPath.lineTo(mainPoint.x + point6.x,mainPoint.y + point6.y);
+                    mainPath.lineTo(mainPoint.x + point7.x,mainPoint.y + point7.y);
+                    mainPath.lineTo(mainPoint.x + point8.x,mainPoint.y + point8.y);
+                    mainPath.lineTo(mainPoint.x + point9.x,mainPoint.y + point9.y);
+                    mainPath.lineTo(mainPoint.x + point10.x,mainPoint.y + point10.y);
                 }
 
                 break;
@@ -376,10 +441,32 @@ public class ShapeBlurView extends CommonView{
                             (((centreY - heartStartPoint) - transY) - yStartMargin)/finalScale,
                             (centreX - transX)/finalScale,
                             ((centreY - heartStartPoint) - transY)/finalScale);
+                }else if (shapeMode == ShapeMode.STAR){
+                    bitmapPath.reset();
+                    // run experiment with bitmapX,bitmapY
+                    mainPoint.x =(int) touchX;
+                    mainPoint.y = (int) touchY - 400;
+                    bitmapPath.moveTo((mainPoint.x - transX)/finalScale ,
+                            (mainPoint.y - transY)/finalScale);
+                    bitmapPath.lineTo(((mainPoint.x - transX) - point2.x)/finalScale,
+                            ((mainPoint.y - transY) + point2.y)/finalScale);
+                    bitmapPath.lineTo(((mainPoint.x - transX) - point3.x)/finalScale,
+                            ((mainPoint.y - transY) + point3.y)/finalScale);
+                    bitmapPath.lineTo(((mainPoint.x - transX) - point4.x)/finalScale,
+                            ((mainPoint.y - transY) + point4.y)/finalScale);
+                    bitmapPath.lineTo(((mainPoint.x - transX) - point5.x)/finalScale,
+                            ((mainPoint.y - transY) + point5.y)/finalScale);
+                    bitmapPath.lineTo(((mainPoint.x - transX) + point6.x)/finalScale,
+                            ((mainPoint.y - transY) + point6.y)/finalScale);
+                    bitmapPath.lineTo(((mainPoint.x - transX) + point7.x)/finalScale,
+                            ((mainPoint.y - transY) + point7.y)/finalScale);
+                    bitmapPath.lineTo(((mainPoint.x - transX) + point8.x)/finalScale,
+                            ((mainPoint.y - transY) + point8.y)/finalScale);
+                    bitmapPath.lineTo(((mainPoint.x - transX) + point9.x)/finalScale,
+                            ((mainPoint.y - transY) + point9.y)/finalScale);
+                    bitmapPath.lineTo(((mainPoint.x - transX) + point10.x)/finalScale,
+                            ((mainPoint.y - transY) + point10.y)/finalScale);
                 }
-
-
-
                 mainPath.reset();
                 bitmapCanvas.drawPath(bitmapPath, mainPaint);
                 break;
