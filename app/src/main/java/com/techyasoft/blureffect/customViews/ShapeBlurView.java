@@ -127,7 +127,6 @@ public class ShapeBlurView extends CommonView{
         resetBitmapCanvas();
         float maxClipHeight = (orgHeight) + transY;
         float top = 0;
-        float left = transX;
         float bottom = Math.min(maxClipHeight,screenHeight);
         if (transY >= 0) {
             top = transY;

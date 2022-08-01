@@ -18,12 +18,12 @@ public class HomeActivity extends AppCompatActivity {
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.blur.setOnClickListener(v -> {
+        binding.blurPhoto.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this,TileBlurActivity.class);
             startActivity(intent);
         });
 
-        binding.shape.setOnClickListener(v -> {
+        binding.shapeBlur.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this,ShapeActivity.class);
             startActivity(intent);
         });

@@ -8,46 +8,50 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="100dp"
         android:id="@+id/header"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/purple_200"
+        android:background="@color/status_bar_color"
         android:paddingHorizontal="10dp"
         >
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/blur_off"
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/blur_normal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/blur_whole"
+            android:layout_marginStart="22dp"
+            android:contentDescription="@string/back"
             />
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/blur_on"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/blur_whole"
-            app:layout_constraintEnd_toStartOf="@id/undo_text"
-            app:layout_constraintStart_toEndOf="@id/blur_normal"
-            />
 
         <TextView
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/blur_whole"
-            android:id="@+id/undo_text"
-            android:text="Undo"
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/blur"
+            android:textStyle="bold"
+            android:textSize="30sp"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:gravity="center_vertical"
+            app:layout_constraintStart_toEndOf="@id/back"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="15dp"
+            />
 
+
+        <ImageView
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_save_img_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="@string/save"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -73,47 +77,168 @@
         android:id="@+id/option_area"
         app:layout_constraintBottom_toTopOf="@id/footer"
         android:layout_marginBottom="5dp"
-        android:background="@color/purple_200"
+        android:background="@drawable/options_container_bg"
         >
 
-        <SeekBar
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/power_seekbar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/offset_seekbar"
-            android:id="@+id/size_seekbar"
-            android:max="500"
-            android:progress="250"
-            android:thumbTint="@color/white"
-            />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/blur_options_container"
+            android:visibility="gone"
+            >
+            <TextView
+                android:id="@+id/size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/power"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="16sp"
+                android:textColor="@color/status_bar_color"
+                />
 
-        <SeekBar
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/size_seekbar"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:id="@+id/offset_seekbar"
-            android:max="500"
-            android:progress="250"
-            android:thumbTint="@color/white"
-            />
+            <TextView
+                android:id="@+id/power"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/power"
+                app:layout_constraintStart_toEndOf="@id/size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                />
 
-        <SeekBar
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            app:layout_constraintTop_toBottomOf="@id/size_seekbar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/offset_seekbar"
-            android:id="@+id/power_seekbar"
-            android:max="100"
-            android:progress="25"
-            android:thumbTint="@color/white"
-            />
+            <SeekBar
+                android:id="@+id/offset_size_progress"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:layout_constraintTop_toBottomOf="@id/size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:thumb="@color/white"
+                android:max="100"
+                android:progress="50"
+                android:progressTint="@color/status_bar_color"
+                android:thumbOffset="10dp"
+                />
+
+            <SeekBar
+                android:id="@+id/offset_power_progress"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:layout_constraintTop_toBottomOf="@id/size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:thumb="@color/white"
+                android:max="100"
+                android:progress="50"
+                android:progressTint="@color/status_bar_color"
+                android:thumbOffset="10dp"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/offset_options_container"
+            >
+            <TextView
+                android:id="@+id/offset_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/size"
+                app:layout_constraintStart_toStartOf="@id/size_progress"
+                app:layout_constraintEnd_toStartOf="@id/offset_power"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="16sp"
+                android:textColor="@color/status_bar_color"
+                />
+
+            <TextView
+                android:id="@+id/offset_power"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/power"
+                app:layout_constraintStart_toEndOf="@id/offset_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                />
+
+            <SeekBar
+                android:id="@+id/size_progress"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                app:layout_constraintStart_toEndOf="@id/orientation_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/offset_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:thumb="@color/white"
+                android:max="100"
+                android:progress="50"
+                android:progressTint="@color/status_bar_color"
+                android:thumbOffset="10dp"
+                />
+
+            <SeekBar
+                android:id="@+id/power_progress"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                app:layout_constraintStart_toEndOf="@id/orientation_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/offset_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:thumb="@color/white"
+                android:max="100"
+                android:progress="50"
+                android:progressTint="@color/status_bar_color"
+                android:thumbOffset="10dp"
+                />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/orientation_container"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/offset_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                >
+                <ImageView
+                    android:id="@+id/left_offset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_left_offset"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/centre_offset"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+                <ImageView
+                    android:id="@+id/centre_offset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_center_offset"
+                    app:layout_constraintStart_toEndOf="@id/left_offset"
+                    app:layout_constraintEnd_toStartOf="@id/right_offset"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+                <ImageView
+                    android:id="@+id/right_offset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_right_offset"
+                    app:layout_constraintStart_toEndOf="@id/centre_offset"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -121,33 +246,184 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="100dp"
         android:id="@+id/footer"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/purple_200"
+        android:background="@color/footer_bg"
         >
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/blur_off"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/blur_off"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/blur_on"
-            />
 
-        <ImageView
-            android:layout_width="40dp"
+        <LinearLayout
+            android:id="@+id/auto_blur_container"
+            android:layout_width="120dp"
             android:layout_height="match_parent"
-            android:src="@drawable/blur_on"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/blur_on"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/blur_container"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@color/status_bar_color"
+            >
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/inactive_auto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_auto_blur"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/inactive_autoblur"
+                    />
+
+                <ImageView
+                    android:id="@+id/active_auto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/inactive_autoblur"
+                    android:src="@drawable/ic_auto_blur" />
+            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/auto_blur"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/blur_container"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toEndOf="@id/auto_blur_container"
+            app:layout_constraintEnd_toStartOf="@id/unblur_container"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/inactive_blur"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_blur_icon"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/inactive_autoblur"
+                    />
+
+                <ImageView
+                    android:id="@+id/active_blur"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/inactive_autoblur"
+                    android:src="@drawable/ic_blur_icon_active"
+                    android:visibility="invisible"
+                    />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/blur"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/unblur_container"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toEndOf="@id/blur_container"
+            app:layout_constraintEnd_toStartOf="@id/offset_container"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/inactive_unblur"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_unblur_icon"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/inactive_autoblur"
+                    />
+
+                <ImageView
+                    android:id="@+id/active_unblur"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/inactive_autoblur"
+                    android:src="@drawable/ic_unblur_icon_active"
+                    android:visibility="invisible"
+                    />
+            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/unblur"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/offset_container"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toEndOf="@id/unblur_container"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/blur_off"
-            />
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/inactive_offset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_offset_icon"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/inactive_autoblur"
+                    />
+
+                <ImageView
+                    android:id="@+id/active_offset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/inactive_autoblur"
+                    android:src="@drawable/ic_offset_icon_active"
+                    android:visibility="invisible"
+                    />
+            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/offset"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

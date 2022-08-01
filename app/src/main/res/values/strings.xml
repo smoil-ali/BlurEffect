@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">BlurEffect</string>
+    <string name="welcome_to_photo_blur">Welcome to photo Blur</string>
+    <string name="easy_to_choose">Easy to Choose</string>
+    <string name="splash_image">Splash Image</string>
+    <string name="sometimes_blurred_pictures_add_more_beauty">Sometimes blurred pictures add more beauty.</string>
+    <string name="let_s_start">Let\'s start</string>
+    <string name="photo_blur">Photo Blur</string>
+    <string name="blurry_is_beautiful">Blurry Is Beautiful</string>
+    <string name="blur_photo_button">Blur Photo Button</string>
+    <string name="shape_blur_button">Shape Blur Button</string>
+    <string name="back">Back</string>
+    <string name="blur">Blur</string>
+    <string name="save">Save</string>
+    <string name="inactive_autoblur">Inactive AutoBlur</string>
+    <string name="auto_blur">Auto Blur</string>
+    <string name="unblur">Unblur</string>
+    <string name="offset">offset</string>
+    <string name="size">Size</string>
+    <string name="power">Power</string>
 </resources>
