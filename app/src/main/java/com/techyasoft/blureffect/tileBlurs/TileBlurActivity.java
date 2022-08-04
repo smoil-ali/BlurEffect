@@ -37,24 +37,24 @@ public class TileBlurActivity extends BaseActivity implements BaseActivity.BaseL
 
 
         // Blur Mode OFF
-        binding.blurOff.setOnClickListener( v -> binding.img.blurModeOff()
+        binding.unblurContainer.setOnClickListener( v -> binding.img.blurModeOff()
         );
 
         // Blur Mode ON
-        binding.blurOn.setOnClickListener(v -> binding.img.blurModeOn()
+        binding.blurContainer.setOnClickListener(v -> binding.img.blurModeOn()
         );
 
         // set Whole Image to Normal
-        binding.blurNormal.setOnClickListener(v -> binding.img.setNormalImage());
+        binding.inactiveBlur.setOnClickListener(v -> binding.img.setNormalImage());
 
         // set Whole Image to Blur
-        binding.blurWhole.setOnClickListener(v -> binding.img.setBlurImage());
+        binding.activeBlur.setOnClickListener(v -> binding.img.setBlurImage());
 
         binding.undoText.setOnClickListener(v -> binding.img.undo());
 
 
         //Change Circle Size
-        binding.sizeSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        binding.sizeProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 binding.img.changeCircleSize(i);
@@ -72,7 +72,7 @@ public class TileBlurActivity extends BaseActivity implements BaseActivity.BaseL
         });
 
         //Change Offset
-        binding.offsetSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        binding.offsetProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 binding.img.changeOffset(i);
@@ -90,7 +90,7 @@ public class TileBlurActivity extends BaseActivity implements BaseActivity.BaseL
         });
 
         //Change density of blur image
-        binding.powerSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        binding.powerProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 updateImage(i);
